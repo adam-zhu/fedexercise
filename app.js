@@ -276,11 +276,11 @@
     }
 
     // get photo info
-    data.photos.photo.map(function(photo) {
+    /*data.photos.photo.map(function(photo) {
       if (!photo.views) {
         getInfo(photo.id, page, setInfo)
       }
-    });
+    });*/ // rerendering after every single query just for views data not worth it
 
     window.removeEventListener('scroll', onScroll, false);
     window.addEventListener('scroll', onScroll, false);
