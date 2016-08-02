@@ -402,8 +402,10 @@
       case 'oldest':
         for (var i=1; i<=(state.tailLength-state.maxPhotos%state.perPage)/state.perPage + 1; i++) {
           if (state.data[state.data.length-i]) {
-            for (var j=0, len=state.data[state.data.length-i].length; j<len; j++) {
-              photos.push(state.data[state.data.length-i][j]);
+            var sortedPhotos = _.clone(state.data[state.data.length-i]);
+                sortedPhotos.sort(function(a,b) {return a.uploadDate-b.uploadDate});
+            for (var j=0, len=sortedPhotos.length; j<len; j++) {
+              photos.push(sortedPhotos[j]);
               if (i*j >= state.count)
                 break;
             }
