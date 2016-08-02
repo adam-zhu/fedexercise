@@ -34,6 +34,7 @@
 
 
 	function getPhotoPage(page, callback, filter) {
+		window.removeEventListener('scroll', onScroll, false);
 		var pageNumber = parseInt(page),
 				postRequest = new ajaxRequest(),
 				endpointUrl = "https://api.flickr.com/services/rest/?method=flickr.people.getPublicPhotos&api_key=a5e95177da353f58113fd60296e1d250&user_id=24662369@N07&format=json&nojsoncallback=1&per_page=50&extras=description,date_upload,owner_name&page="+pageNumber;
@@ -281,6 +282,9 @@
 			}
 		});
 
+		window.removeEventListener('scroll', onScroll, false);
+		window.addEventListener('scroll', onScroll, false);
+
 	}
 
 	function ingestSearchResults(term, results) {
@@ -331,7 +335,7 @@
 					random.push({page: randomPage, index: randomIndex});
 
 					if (state.data[randomPage] == undefined) {
-						getPhotoPage(randomPage, ingest, state.filter);
+						getPhotoPage(randomPage, ingest, filter);
 					}
 				}
 
@@ -369,8 +373,6 @@
 		});
 		// trigger vdom diff and rerender
 		projector.scheduleRender();
-		window.removeEventListener('scroll', onScroll, false);
-		window.addEventListener('scroll', onScroll, false);
 	}
 
 	function render() {
@@ -550,11 +552,10 @@
 
 	function onScroll(e) {
 
-	    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight-20 && state.count < state.maxPhotos) {
-	    	window.removeEventListener('scroll', onScroll, false);
+	    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50 &&
+	    		state.count < state.maxPhotos) {
 
 	    	if (state.filter == 'random') {
-
 					var randomPhotos = new Map(state.randomPhotos),
 							random = _.cloneDeep(state.random),
 							randomPhotoCount = state.count == state.maxPhotos-1 ? 1 : 2;
@@ -578,6 +579,7 @@
 							getPhotoPage(randomPage, ingest, state.filter);	
 						}
 					}
+
 					setState({
 						randomPhotos: randomPhotos,
 						random: random,
@@ -596,13 +598,11 @@
 	    switch (state.filter) {
 	    	case 'recent':
 	    		if (state.headLength - state.count < 10 && _.compact(state.data).length < state.maxPages) {
-	    			window.removeEventListener('scroll', onScroll, false);
     				getPhotoPage(state.headLength/state.perPage + 1, ingest, state.filter);
     			}
 	    	break;
 	    	case 'oldest':
 	    		if (state.tailLength - state.count < 10 && _.compact(state.data).length < state.maxPages) {
-	    			window.removeEventListener('scroll', onScroll, false);
 	    			getPhotoPage(state.maxPages - (state.tailLength - state.maxPhotos%state.perPage)/state.perPage - 1, ingest, state.filter);
 	    		}
 	    	break;
