@@ -169,8 +169,8 @@ body {
 		margin-right: -12px;
 	}
 	.filter {
-		margin-left: 12px;
-		padding: 0 12px 12px 12px;
+		margin-left: 0px;
+		padding: 0 8px 12px 8px;
 		font-size: 10px;
 	}
 	.cardHeader {
@@ -193,7 +193,7 @@ body {
 	.cardHeader .age {
 		top: 0px;
 		right: 6px;
-		line-height: 1;
+		line-height: 18px;
 	}
 	.card .title {
 		font-size: 16px;
