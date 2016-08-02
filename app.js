@@ -88,73 +88,6 @@
     postRequest.send(parameters);
   }
 
-  function getInfo(photoId, page, callback) {
-    var postRequest = new ajaxRequest(),
-        endpointUrl = "https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=a5e95177da353f58113fd60296e1d250&photo_id="+
-                      photoId+
-                      "&format=json&nojsoncallback=1";
-
-    postRequest.onreadystatechange = function() {
-     if (postRequest.readyState == 4) {
-      if (callback && postRequest.status == 200 || window.location.href.indexOf("http") == -1) {
-       callback(photoId, page, postRequest.responseText);
-      }
-      else{
-       alert("An error has occured making the request");
-      }
-     }
-    }
-
-    postRequest.open(
-      "POST",
-      endpointUrl,
-      true
-    );
-    postRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    postRequest.send(parameters);
-  }
-
-  function setInfo(photoId, page, data) {
-    if (state.filter == 'search') {
-      var responseObj = JSON.parse(data),
-          responseInfo = responseObj.photo,
-          currentPhotos = state.searchResults.get(state.term);
-      if (currentPhotos) {
-        var photoObj = currentPhotos.find(function(photo) {
-              return photo.id === photoId
-            });
-        if (photoObj) {
-          photoObj.views = responseInfo.views;
-          photoObj.uploadDate = parseInt(photoObj.dateupload);
-          photoObj.owner = responseInfo.owner;
-
-          setState({
-            searchResults: state.searchResults.set(state.term, currentPhotos)
-          });
-        }
-      }
-    } else {
-      var responseObj = JSON.parse(data),
-          responseInfo = responseObj.photo,
-          newData = JSON.parse(JSON.stringify(state.data)),
-          currentPhotos = newData[page],
-          photoObj = {};
-
-      if (currentPhotos)
-          photoObj = currentPhotos.find(function(photo) {
-            return photo.id === photoId
-          });
-
-      photoObj.views = responseInfo.views;
-      photoObj.uploadDate = parseInt(photoObj.dateupload);
-      photoObj.owner = responseInfo.owner;
-
-      setState({
-        data: newData
-      });
-    }
-  }
-
   function ingest(data, page, filter) {
 
     data.photos.photo.map(function(photo) {
@@ -695,6 +628,73 @@
         return false
     }
   }
+
+  /*function getInfo(photoId, page, callback) {
+    var postRequest = new ajaxRequest(),
+        endpointUrl = "https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=a5e95177da353f58113fd60296e1d250&photo_id="+
+                      photoId+
+                      "&format=json&nojsoncallback=1";
+
+    postRequest.onreadystatechange = function() {
+     if (postRequest.readyState == 4) {
+      if (callback && postRequest.status == 200 || window.location.href.indexOf("http") == -1) {
+       callback(photoId, page, postRequest.responseText);
+      }
+      else{
+       alert("An error has occured making the request");
+      }
+     }
+    }
+
+    postRequest.open(
+      "POST",
+      endpointUrl,
+      true
+    );
+    postRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    postRequest.send(parameters);
+  }
+
+  function setInfo(photoId, page, data) {
+    if (state.filter == 'search') {
+      var responseObj = JSON.parse(data),
+          responseInfo = responseObj.photo,
+          currentPhotos = state.searchResults.get(state.term);
+      if (currentPhotos) {
+        var photoObj = currentPhotos.find(function(photo) {
+              return photo.id === photoId
+            });
+        if (photoObj) {
+          photoObj.views = responseInfo.views;
+          photoObj.uploadDate = parseInt(photoObj.dateupload);
+          photoObj.owner = responseInfo.owner;
+
+          setState({
+            searchResults: state.searchResults.set(state.term, currentPhotos)
+          });
+        }
+      }
+    } else {
+      var responseObj = JSON.parse(data),
+          responseInfo = responseObj.photo,
+          newData = JSON.parse(JSON.stringify(state.data)),
+          currentPhotos = newData[page],
+          photoObj = {};
+
+      if (currentPhotos)
+          photoObj = currentPhotos.find(function(photo) {
+            return photo.id === photoId
+          });
+
+      photoObj.views = responseInfo.views;
+      photoObj.uploadDate = parseInt(photoObj.dateupload);
+      photoObj.owner = responseInfo.owner;
+
+      setState({
+        data: newData
+      });
+    }
+  }*/
 
 
 
