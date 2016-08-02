@@ -176,7 +176,7 @@
 
 		} else if (state.tailLength == 0 && page == state.maxPages) { // ingest of last page
 
-			var newData = _.cloneDeep(state.data);
+			var newData = _.clone(state.data);
 			newData[page] = data.photos.photo;
 			setState({
 				data: newData,
@@ -188,7 +188,7 @@
 			switch (filter) {
 
 				case 'recent':
-					var newData = _.cloneDeep(state.data);
+					var newData = _.clone(state.data);
 					newData[page] = data.photos.photo;
 					var headLength = 0,
 							prev = 0;
@@ -207,7 +207,7 @@
 				break;
 
 				case 'oldest':
-					var newData = _.cloneDeep(state.data);
+					var newData = _.clone(state.data);
 					newData[page] = data.photos.photo;
 					var tailLength = 0,
 							prev = state.maxPages+1;
@@ -226,7 +226,7 @@
 				break;
 
 				case 'random':
-					var newData = _.cloneDeep(state.data);
+					var newData = _.clone(state.data);
 					newData[page] = data.photos.photo;
 					var nextHeadPage = state.headLength / state.perPage + 1,
 							nextTailPage = state.maxPages - ((state.tailLength - state.maxPhotos%state.perPage) / state.perPage + 1);
@@ -289,7 +289,7 @@
 
 	function ingestSearchResults(term, results) {
 		var data = JSON.parse(results),
-				searchResults = _.cloneDeep(state.searchResults);
+				searchResults = _.clone(state.searchResults);
 		searchResults.set(term, data.photos.photo);
 		data.photos.photo.map(function(photo) {
 			photo.uploadDate = parseInt(photo.dateupload);
@@ -557,7 +557,7 @@
 
 	    	if (state.filter == 'random') {
 					var randomPhotos = new Map(state.randomPhotos),
-							random = _.cloneDeep(state.random),
+							random = _.clone(state.random),
 							randomPhotoCount = state.count == state.maxPhotos-1 ? 1 : 2;
 
 					for (var i=0; i<randomPhotoCount; i++) {
