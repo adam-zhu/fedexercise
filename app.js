@@ -298,11 +298,11 @@
     setState({
       searchResults: searchResults
     });
-    data.photos.photo.map(function(photo) {
+    /*data.photos.photo.map(function(photo) {
       if (!photo.views) {
         getInfo(photo.id, -1, setInfo)
       }
-    });
+    });*/
   }
 
   function setFilter(e) {
